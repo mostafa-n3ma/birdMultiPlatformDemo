@@ -5,14 +5,14 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-
+    id("kotlinx-serialization")
 }
 
 kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "11"
             }
         }
     }
@@ -43,12 +43,18 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(libs.kamel.image)
-            implementation(libs.ktor.client.core)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            api(libs.mvvm.core)
-            api(libs.mvvm.compose)
+//            implementation(libs.ktor.client.core)
+//            implementation(libs.kotlinx.serialization.json)
+//            implementation(libs.ktor.client.content.negotiation)
+//            implementation(libs.ktor.serialization.kotlinx.json)
+//            api(libs.mvvm.core)
+//            api(libs.mvvm.compose)
+            implementation("io.ktor:ktor-client-core:2.3.1")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.1")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+            api("dev.icerock.moko:mvvm-core:0.16.1") // only ViewModel, EventsDispatcher, Dispatchers.UI
+            api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multiplatfrom
         }
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -91,9 +97,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
+
+
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
